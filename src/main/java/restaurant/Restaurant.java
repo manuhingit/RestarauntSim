@@ -17,7 +17,7 @@ public class Restaurant {
 
     public static void main(String[] args) {
 
-//        DirectorMenu menu = new DirectorMenu();
+        DirectorMenu menu = new DirectorMenu();
 
         Cook[] cooks =  {new Cook("Amigo"), new Cook("Diego")};
         List<Cook> cookList = new LinkedList<>(Arrays.asList(cooks));
