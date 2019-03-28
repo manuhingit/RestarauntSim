@@ -7,41 +7,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class AdManager implements ActionListener {
-
-    private static final GridBagConstraints gbc = new GridBagConstraints();
-
-    static {
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 10, 0);
-    }
-
-    private JFrame setFrame(String title, int width, int height, boolean isResizable) {
-        JFrame frame = new JFrame();
-        frame.setTitle(title);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.pack();
-        frame.setSize(new Dimension(width, height));
-        frame.setResizable(isResizable);
-        return frame;
-    }
-
-    private JPanel setMainPanel() {
-        JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panel.setLayout(new GridBagLayout());
-        return panel;
-    }
+public class AdManager extends Frame {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFrame frame = setFrame("Ads Manager", 350, 400, true);
-
-        JPanel panel = setMainPanel();
+        setFrame("Ads Manager");
+        setMainPanel();
 
         JPanel ads = new JPanel(new GridBagLayout());
         JLabel label = new JLabel("Ads");
@@ -62,9 +34,7 @@ public class AdManager implements ActionListener {
 
         panel.add(ads);
 
-        frame.add(panel);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        finishFrame();
 
         Thread thread = new Thread(() -> {
             while (frame.isVisible()) {
@@ -90,13 +60,13 @@ public class AdManager implements ActionListener {
                 + ad.getInitialAmount() + " hits");
     }
 
-    public class NewAdd implements ActionListener {
+    public class NewAdd extends Frame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFrame frame = setFrame("New Add", 300, 350, false);
+            setFrame("New Add", 300, 350, false);
 
-            JPanel panel = setMainPanel();
+            setMainPanel();
 
             JPanel form = new JPanel(new GridBagLayout());
             JLabel label = new JLabel("Name");
@@ -159,9 +129,7 @@ public class AdManager implements ActionListener {
 
             panel.add(form);
 
-            frame.add(panel);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            finishFrame();
         }
     }
 }
