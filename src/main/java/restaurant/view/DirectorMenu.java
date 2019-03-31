@@ -4,40 +4,27 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class DirectorMenu {
+public class DirectorMenu extends Frame {
 
     public DirectorMenu() {
-        JFrame frame = new JFrame();
-        frame.setTitle("Director's restaurant.Tablet");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(new Dimension(350, 400));
-        frame.setResizable(false);
+        if (!isInit) {
+            setFrame("Director's Tablet", 350, 400, false);
 
-        JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panel.setLayout(new GridBagLayout());
+            JPanel buttons = new JPanel(new GridBagLayout());
+            JButton adManagerButton = new JButton("Ad manager");
+            adManagerButton.addActionListener(new AdManager());
+            buttons.add(adManagerButton, gbc);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 0, 10, 0);
+            JButton kitchenManagerButton = new JButton("Kitchen manager");
+            kitchenManagerButton.addActionListener(new KitchenManager());
+            buttons.add(kitchenManagerButton, gbc);
 
-        JPanel buttons = new JPanel(new GridBagLayout());
-        JButton adManagerButton = new JButton("Ad manager");
-        adManagerButton.addActionListener(new AdManager());
-        buttons.add(adManagerButton, gbc);
+            buttons.add(new JButton("Statistics"), gbc);
+            buttons.add(new JButton("restaurant.Restaurant simulation"), gbc);
 
-        buttons.add(new JButton("Kitchen manager"), gbc);
-        buttons.add(new JButton("Statistics"), gbc);
-        buttons.add(new JButton("restaurant.Restaurant simulation"), gbc);
-        gbc.weighty = 1;
+            panel.add(buttons, gbc);
+        }
 
-        panel.add(buttons, gbc);
-
-        frame.add(panel);
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

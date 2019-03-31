@@ -1,6 +1,7 @@
 package restaurant;
 
 import restaurant.kitchen.Cook;
+import restaurant.kitchen.KitchenStorage;
 import restaurant.kitchen.Order;
 import restaurant.kitchen.Waiter;
 import restaurant.view.DirectorMenu;
@@ -19,25 +20,15 @@ public class Restaurant {
 
         DirectorMenu menu = new DirectorMenu();
 
-        Cook[] cooks =  {new Cook("Amigo"), new Cook("Diego")};
-        List<Cook> cookList = new LinkedList<>(Arrays.asList(cooks));
-        Waiter waiter = new Waiter();
-        for (Cook cook : cookList) {
-            cook.addObserver(waiter);
-            cook.setQueue(orderQueue);
-            Thread cooker = new Thread(cook);
-            cooker.start();
-        }
+        KitchenStorage kitchenStorage = KitchenStorage.getInstance();
 
-        List<Tablet> tablets = new LinkedList<>();
+        kitchenStorage.addCook(new Cook("Amigo"));
+        kitchenStorage.addCook(new Cook("Diego"));
+        kitchenStorage.addWaiter(new Waiter());
 
-        for (int i = 0; i < 5; i++) {
-            Tablet tablet = new Tablet(i);
-            tablet.setQueue(orderQueue);
-            tablets.add(tablet);
-        }
+        for (int i = 0; i < 5; i++) kitchenStorage.addTablet(new Tablet());
 
-        Thread thread = new Thread(new RandomOrderGeneratorTask(tablets, ORDER_CREATING_INTERVAL));
+        Thread thread = new Thread(new RandomOrderGeneratorTask(kitchenStorage.getTablets(), ORDER_CREATING_INTERVAL));
         thread.start();
 
         try {
@@ -53,5 +44,9 @@ public class Restaurant {
         directorTablet.printCookWorkloading();
         directorTablet.printActiveVideoSet();
         directorTablet.printArchivedVideoSet();
+    }
+
+    public static LinkedBlockingQueue<Order> getOrderQueue() {
+        return orderQueue;
     }
 }

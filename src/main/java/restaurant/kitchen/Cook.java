@@ -29,11 +29,11 @@ public class Cook extends Observable implements Runnable{
 
     @Override
     public String toString() {
-        return this.name;
+        return this.name + " - " + (busy ? "busy" : "not busy");
     }
 
 
-    public void startCookingOrder (restaurant.kitchen.Order order) {
+    public void startCookingOrder (Order order) {
         //Order order = (Order)arg;
         busy = true;
         ConsoleHelper.writeMessage("Start cooking - " + order.toString()+", cooking time "+order.getTotalCookingTime()+" min");

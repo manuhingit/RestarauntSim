@@ -2,6 +2,7 @@ package restaurant;
 
 import restaurant.ad.AdvertisementManager;
 import restaurant.ad.NoVideoAvailableException;
+import restaurant.kitchen.KitchenStorage;
 import restaurant.kitchen.Order;
 import restaurant.kitchen.TestOrder;
 
@@ -15,8 +16,8 @@ public class Tablet {
     public static Logger logger = Logger.getLogger(Tablet.class.getName());
     private LinkedBlockingQueue<Order> queue;
 
-    public Tablet(int number) {
-        this.number = number;
+    public Tablet() {
+        number = KitchenStorage.getInstance().getTablets().size();
     }
 
     public void setQueue(LinkedBlockingQueue<Order> queue) {

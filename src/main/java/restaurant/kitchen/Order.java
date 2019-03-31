@@ -36,6 +36,10 @@ public class Order {
         return dishes.size() > 0 ? "Your order: " + dishes.toString() + " of " + tablet.toString() : "";
     }
 
+    public String orderInfo() {
+        return tablet.toString() + ": " + dishes.toString();
+    }
+
     public int getTotalCookingTime() {
         return dishes.stream().mapToInt(Dish::getDuration).sum();
     }
