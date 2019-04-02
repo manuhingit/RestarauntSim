@@ -51,9 +51,12 @@ public abstract class Frame implements ActionListener {
     }
 
     JList setList(DefaultListModel<String> listModel) {
-        JList<String> list = new JList<>(listModel);
+        JList<String> list = new JList(listModel);
         list.setBorder(new EmptyBorder(20, 20, 20, 20));
-        list.setFixedCellHeight(30);
+        list.setFixedCellHeight(20);
+        list.setVisibleRowCount(5);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         return list;
     }
 

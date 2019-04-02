@@ -28,22 +28,8 @@ public class Restaurant {
 
         for (int i = 0; i < 5; i++) kitchenStorage.addTablet(new Tablet());
 
-        Thread thread = new Thread(new RandomOrderGeneratorTask(kitchenStorage.getTablets(), ORDER_CREATING_INTERVAL));
+        Thread thread = new Thread(new RandomOrderGeneratorTask(ORDER_CREATING_INTERVAL));
         thread.start();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        thread.interrupt();
-
-        DirectorTablet directorTablet = new DirectorTablet();
-        directorTablet.printAdvertisementProfit();
-        directorTablet.printCookWorkloading();
-        directorTablet.printActiveVideoSet();
-        directorTablet.printArchivedVideoSet();
     }
 
     public static LinkedBlockingQueue<Order> getOrderQueue() {

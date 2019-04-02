@@ -15,6 +15,11 @@ public class Order {
         initDishes();
     }
 
+    public Order(Tablet tablet, List<Dish> dishes) throws IOException {
+        this.tablet = tablet;
+        this.dishes = dishes;
+    }
+
     public boolean isEmpty() {
         return dishes.isEmpty();
     }

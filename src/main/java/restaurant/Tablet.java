@@ -2,11 +2,13 @@ package restaurant;
 
 import restaurant.ad.AdvertisementManager;
 import restaurant.ad.NoVideoAvailableException;
+import restaurant.kitchen.Dish;
 import restaurant.kitchen.KitchenStorage;
 import restaurant.kitchen.Order;
 import restaurant.kitchen.TestOrder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +26,7 @@ public class Tablet {
         this.queue = queue;
     }
 
-    public void createOrder() {
+    public void createOrderConsole() {
         Order order = null;
         try {
             order = new Order(this);
@@ -38,6 +40,17 @@ public class Tablet {
             logger.log(Level.INFO, "No video is available for the order " + order);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
+        }
+    }
+
+    public void createOrder(List<Dish> dishes) {
+        try {
+            Order order = new Order(this, dishes);
+            queue.add(order);
+            AdvertisementManager advertisementManager = new AdvertisementManager(order.getTotalCookingTime() * 60);
+            advertisementManager.processVideos();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

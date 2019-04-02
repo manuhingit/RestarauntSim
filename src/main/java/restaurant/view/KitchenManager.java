@@ -2,15 +2,14 @@ package restaurant.view;
 
 import restaurant.Restaurant;
 import restaurant.Tablet;
-import restaurant.kitchen.Cook;
-import restaurant.kitchen.KitchenStorage;
-import restaurant.kitchen.Order;
-import restaurant.kitchen.Waiter;
+import restaurant.kitchen.*;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KitchenManager extends Frame {
 
@@ -18,6 +17,7 @@ public class KitchenManager extends Frame {
     private DefaultListModel<String> waitersListModel = new DefaultListModel<>();
     private DefaultListModel<String> tabletsListModel = new DefaultListModel<>();
     private DefaultListModel<String> ordersListModel = new DefaultListModel<>();
+    private DefaultListModel<String> dishesListModel = new DefaultListModel<>();
 
     private KitchenStorage storage = KitchenStorage.getInstance();
 
@@ -62,42 +62,40 @@ public class KitchenManager extends Frame {
         JLabel tabletsLabel = new JLabel(panelLabel);
         tabletsLabel.setHorizontalAlignment(JLabel.CENTER);
         resultPanel.add(tabletsLabel, gbc);
-        resultPanel.add(setList(listModel), gbc);
+        JScrollPane scroller = new JScrollPane(setList(listModel));
+        scroller.setMinimumSize(new Dimension(250, 200));
+        resultPanel.add(scroller, gbc);
 
         JButton addTabletButton = new JButton(buttonText);
-        addTabletButton.addActionListener((e) -> {
-            switch (buttonText) {
-                case "Add Cook": {
-                    String cookName;
-                    do {
-                        cookName = JOptionPane.showInputDialog("Enter a name of new cook:");
-                    } while (cookName.length() <= 0);
-                    storage.addCook(new Cook(cookName));
+        if (buttonText.equals("Create Order")) addTabletButton.addActionListener(new CreateOrderFrame());
+        else
+            addTabletButton.addActionListener((e) -> {
+                switch (buttonText) {
+                    case "Add Cook": {
+                        String cookName;
+                        do {
+                            cookName = JOptionPane.showInputDialog("Enter a name of new cook:");
+                        } while (cookName.length() <= 0);
+                        storage.addCook(new Cook(cookName));
 
-                    break;
+                        break;
+                    }
+                    case "Add Tablet": {
+                        storage.addTablet(new Tablet());
+                        break;
+                    }
+                    case "Add Waiter": {
+                        storage.addWaiter(new Waiter());
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
-                case "Add Tablet": {
-                    storage.addTablet(new Tablet());
-                    break;
-                }
-                case "Add Waiter": {
-                    storage.addWaiter(new Waiter());
-                    break;
-                }
-                case "Add Order": {
-                    // TODO
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        });
+            });
         resultPanel.add(addTabletButton, gbc);
 
-        resultPanel.setPreferredSize(new
-
-                Dimension(300, 400));
+        resultPanel.setPreferredSize(new Dimension(300, 400));
         panel.add(resultPanel, mainConstraints);
     }
 
@@ -118,8 +116,42 @@ public class KitchenManager extends Frame {
         for (Order order : Restaurant.getOrderQueue()) ordersListModel.addElement(order.orderInfo());
     }
 
-    private class CreateOrderFrame extends Frame {
+    public class CreateOrderFrame extends Frame {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!isInit) {
+                setFrame("Create new order", 350, 400, false);
 
+                JPanel createOrderPanel = new JPanel(new GridBagLayout());
+                JLabel dishesLabel = new JLabel("List of dishes");
+                dishesLabel.setHorizontalAlignment(JLabel.CENTER);
+                createOrderPanel.add(dishesLabel, gbc);
+                for (Dish dish : Dish.values()) dishesListModel.addElement(dish.name());
+                JList list = setList(dishesListModel);
+                createOrderPanel.add(new JScrollPane(list), gbc);
+
+                JButton button = new JButton("Create Order");
+                button.addActionListener((event) -> {
+                    List values = list.getSelectedValuesList();
+                    if (!values.isEmpty()) {
+                        List<Tablet> tablets = storage.getTablets();
+                        int randomTabletNumber = (int) (Math.random() * tablets.size());
+                        List<Dish> dishesOrder = new ArrayList<>();
+                        for (Object dish : values) {
+                            String dishString = (String) dish;
+                            dishesOrder.add(Dish.valueOf(dishString));
+                        }
+                        tablets.get(randomTabletNumber).createOrder(dishesOrder);
+                        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                    }
+                });
+                createOrderPanel.add(button, gbc);
+
+                panel.add(createOrderPanel, gbc);
+            }
+
+            frame.setVisible(true);
+        }
     }
 
 }

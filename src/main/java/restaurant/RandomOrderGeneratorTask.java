@@ -1,14 +1,15 @@
 package restaurant;
 
+import restaurant.kitchen.KitchenStorage;
+
 import java.util.List;
 
 public class RandomOrderGeneratorTask implements Runnable {
 
-    private List<Tablet> tablets;
+    private List<Tablet> tablets = KitchenStorage.getInstance().getTablets();
     private int interval;
 
-    public RandomOrderGeneratorTask(List<Tablet> tablets, int interval) {
-        this.tablets = tablets;
+    public RandomOrderGeneratorTask(int interval) {
         this.interval = interval;
     }
 
