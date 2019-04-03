@@ -19,8 +19,11 @@ public class DirectorMenu extends Frame {
             kitchenManagerButton.addActionListener(new KitchenManager());
             buttons.add(kitchenManagerButton, gbc);
 
-            buttons.add(new JButton("Statistics"), gbc);
-            buttons.add(new JButton("restaurant.Restaurant simulation"), gbc);
+            JButton statisticButton = new JButton("Statistic");
+            statisticButton.addActionListener(new Statistic());
+            buttons.add(statisticButton, gbc);
+
+            buttons.add(new JButton("Restaurant simulation"), gbc);
 
             panel.add(buttons, gbc);
         }

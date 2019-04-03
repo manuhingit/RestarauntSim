@@ -9,7 +9,7 @@ public class RandomOrderGeneratorTask implements Runnable {
     private List<Tablet> tablets = KitchenStorage.getInstance().getTablets();
     private int interval;
 
-    public RandomOrderGeneratorTask(int interval) {
+    RandomOrderGeneratorTask(int interval) {
         this.interval = interval;
     }
 
