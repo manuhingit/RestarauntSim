@@ -25,7 +25,7 @@ public class AdvertisementManager {
         videos.removeIf(ad -> ad.getHits() < 1);
         finder.makeAllSets(videos);
         List<restaurant.ad.Advertisement> ads = finder.getBestOption();
-        Collections.sort(ads, Comparator.comparing(restaurant.ad.Advertisement::getAmountPerOneDisplaying).reversed().thenComparing(restaurant.ad.Advertisement::getProfitForOneSecond));
+        ads.sort(Comparator.comparing(Advertisement::getAmountPerOneDisplaying).reversed().thenComparing(Advertisement::getProfitForOneSecond));
 
         long amount = 0;
         int totalDuration = 0;

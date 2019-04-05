@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdFinder {
-    private List<Advertisement> bestOption;
+    private List<Advertisement> bestOption = new ArrayList<>();
     private long maxTime;
     private long bestProfit;
     private long bestTime;
